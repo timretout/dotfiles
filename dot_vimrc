@@ -1,0 +1,27 @@
+" Automatically sync Vim's copy/paste registers with the Wayland system clipboard
+set clipboard=unnamedplus
+
+" Tell Vim to execute native Wayland commands for clipboard actions
+if executable('wl-copy') && executable('wl-paste')
+    augroup WaylandClipboardSync
+        autocmd!
+        " 1. PUSH: When you yank text in Vim, instantly pipe it to the Wayland clipboard
+        autocmd TextYankPost * if v:event.regname == '+' || v:event.regname == '' | call system('wl-copy', getreg('"')) | endif
+
+        " 2. PULL: When you open a file, switch buffers, or focus the terminal, pull from Wayland
+        autocmd BufEnter,FocusGained * let @+ = system('wl-paste --no-newline')
+    augroup END
+endif
+
+" Enable syntax highlighting (turns on colors)
+syntax on
+colorscheme slate
+
+" Enable 24-bit true color support (looks beautiful inside the foot terminal)
+if has('termguicolors')
+  set termguicolors
+endif
+
+" Enable file type detection, plugins, and smart indentation
+filetype plugin indent on
+
