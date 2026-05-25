@@ -1,0 +1,30 @@
+
+#TabsToolbar {
+    visibility: collapse !important;
+}
+
+#titlebar {
+    visibility: collapse !important;
+}
+
+/* Hide "New Tab" from the main Hamburger App Menu */
+#appMenu-new-tab-button,
+#appMenu-new-tab-button2 {
+    display: none !important;
+}
+
+/* Hide "New Tab" from the traditional top File Menu */
+#menu_newNavigatorTab {
+    display: none !important;
+}
+
+/* Hide "Open Link in New Tab" from the right-click menu on links */
+#context-openlinkintab {
+    display: none !important;
+}
+
+/* Optional: Hide "Open All in Tabs" from bookmark folders right-click */
+#placesContext_openBookmarkContainer:tabs,
+.bookmark-item[container="true"] menupopup menuitem[id^="placesContext_open"] {
+    display: none !important;
+}
