@@ -117,3 +117,6 @@ export PATH="/home/tim/bin:/home/tim/.local/bin:$PATH"
 export EDITOR="emacsclient -nw"
 export VISUAL="emacsclient -c -a ''"
 
+if [ -f "$HOME/.cargo/env" ]; then
+  . "$HOME/.cargo/env"
+fi
