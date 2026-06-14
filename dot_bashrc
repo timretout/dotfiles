@@ -115,4 +115,5 @@ fi
 export PATH="/home/tim/bin:/home/tim/.local/bin:$PATH"
 
 export EDITOR="emacsclient -nw"
+export VISUAL="emacsclient -c -a ''"
 
