@@ -42,6 +42,26 @@ include /etc/sway/config-vars.d/*
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
 
+
+# Inhibit idle when any application is fullscreen
+for_window [class=".*"] inhibit_idle fullscreen
+for_window [app_id=".*"] inhibit_idle fullscreen
+
+# Define the locking command variable
+set $lock 'swaylock -f -c 000000'
+
+# Keybinding: Lock the screen manually with a keyboard shortcut
+bindsym $mod+l exec $lock
+
+bindsym $mod+Shift+h exec systemctl hibernate
+
+# Idle Integration: Automatically lock right before your laptop suspends or goes to sleep
+exec swayidle -w \
+    timeout 300 'playerctl status 2>/dev/null | grep -q "Playing" || pactl list sinks short 2>/dev/null | grep -q "RUNNING" || swaylock -f -c 000000' \
+    timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+    timeout 1800 'playerctl status 2>/dev/null | grep -q "Playing" || pactl list sinks short 2>/dev/null | grep -q "RUNNING" || systemctl suspend' \
+    before-sleep 'swaylock -f -c 000000'
+
 ### Input configuration
 #
 # Example configuration:
