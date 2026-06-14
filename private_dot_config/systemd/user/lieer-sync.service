@@ -1,0 +1,14 @@
+[Unit]
+Description=Synchronize Gmail with Notmuch via Lieer
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/.mail/retout
+# Run the API pull, then pass execution to the database indexer
+ExecStart=/usr/bin/gmi sync
+ExecStartPost=/usr/bin/notmuch new
+ExecStartPost=-/usr/bin/pkill -SIGRTMIN+8 waybar
+
+[Install]
+WantedBy=default.target

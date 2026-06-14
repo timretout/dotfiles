@@ -1,0 +1,101 @@
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
+;; and `package-pinned-packages`. Most users will not need or want to do this.
+;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(package-initialize)
+
+(setq inferior-lisp-program "/usr/bin/sbcl")
+
+(load-theme 'tango-dark t)
+
+;; Tell Emacs to strip '.tmpl' from file extensions and look again
+(add-to-list 'auto-mode-alist '("\\.tmpl\\'" ignore t))
+
+;; Ensure syntax highlighting is forced globally across all frames
+(global-font-lock-mode t)
+
+(use-package whitespace
+  :ensure nil ; Built-in, no installation required
+  :init
+  ;; 1. Limit the scope to ONLY trailing spaces and literal tabs
+  (setq whitespace-style '(face tabs trailing))
+
+  ;; 2. Make Makefiles an exception (since Makefiles REQUIRE literal tabs to work)
+  (setq whitespace-global-modes '(not makefile-mode makefile-gmake-mode))
+
+  :config
+  ;; 3. Paint them with a bright warning background color (like Git Diff)
+  (set-face-attribute 'whitespace-trailing nil
+                      :background "#db4b4b"
+                      :foreground "#ffffff"
+                      :weight 'bold)
+
+  (set-face-attribute 'whitespace-tab nil
+                      :background "#e0af68"
+                      :foreground "#000000"
+                      :weight 'bold)
+
+  ;; 4. Fire it up globally across the editor
+  (global-whitespace-mode 1))
+
+(setq minibuffer-follows-selected-frame nil)
+(setq enable-recursive-minibuffers t)
+
+;; Redirect all backup (~ files) to a centralized cache directory
+(setq backup-directory-alist
+      `((".*" . ,(expand-file-name "backups/" user-emacs-directory))))
+
+;; Redirect all auto-save (# files) to the same centralized directory
+(setq auto-save-file-name-transforms
+      `((".*" ,(expand-file-name "backups/" user-emacs-directory) t)))
+
+;;
+;; git
+;;
+
+(require 'git-commit)
+
+(global-git-commit-mode 1)
+
+(with-eval-after-load 'git-commit
+  ;; Highlight characters that cross the 50-character limit on line 1
+  (setq git-commit-summary-max-length 50)
+
+  ;; Automatically wrap the body of the commit message at 72 characters
+  (setq fill-column 72))
+
+{{- if .enable_blog }}
+;;
+;; Hugo blog
+;;
+
+(load-file (expand-file-name "lisp/hugo-blog.el" user-emacs-directory))
+{{- end }}
+
+{{- if .enable_org }}
+;; =============================================================================
+;; ORG-MODE CONFIGURATION
+;; =============================================================================
+
+(load-file (expand-file-name "lisp/vsm-org.el" user-emacs-directory))
+{{- end }}
+
+{{- if .enable_mail }}
+(load-file (expand-file-name "lisp/notmuch-mail.el" user-emacs-directory))
+{{- end }}
+
+;;; -*- lexical-binding: t -*-
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(inhibit-startup-screen t)
+ '(package-selected-packages '(slime)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

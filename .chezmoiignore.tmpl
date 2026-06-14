@@ -1,0 +1,9 @@
+**/*~
+**/#*#
+
+{{- if not .enable_blog }}
+dot_local/bin/blog.sh
+dot_local/bin/blog-status.sh
+dot_emacs.d/lisp/hugo-blog.el
+run_once_after_setup-hugo-blog.sh.tmpl
+{{- end }}

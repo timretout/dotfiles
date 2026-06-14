@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# lieer-sync.service hash: {{ include "private_dot_config/systemd/user/lieer-sync.service" | sha256sum }}
+# lieer-sync.timer hash: {{ include "private_dot_config/systemd/user/lieer-sync.timer" | sha256sum }}
+
+echo "==> Systemd Lieer configuration changed. Refreshing services..."
+
+# 1. Tell systemd to re-read the updated unit definitions
+systemctl --user daemon-reload
+
+# 2. Ensure the timer is enabled and running immediately
+systemctl --user enable --now lieer-sync.timer
+
+# 3. Optional: Restart the sync service immediately to pull fresh mail right now
+systemctl --user restart lieer-sync.service

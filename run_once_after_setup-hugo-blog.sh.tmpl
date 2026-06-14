@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+{{ if .enable_blog }}
+echo "==> Configuring Hugo Blog Dependencies..."
+
+if command -v hugo &> /dev/null; then
+    echo "Found Hugo: $(hugo version)"
+else
+    echo "WARNING: Hugo is not installed."
+fi
+
+BLOG_DIR="$HOME/src/retout.co.uk"
+if [ ! -d "$BLOG_DIR" ]; then
+    echo "Cloning blog repository now..."
+    mkdir -p "$HOME/src"
+    git clone git@github.com:timretout/retout.co.uk.git "$BLOG_DIR"
+fi
+{{ end }}

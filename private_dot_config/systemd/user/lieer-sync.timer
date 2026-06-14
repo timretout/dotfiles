@@ -1,0 +1,12 @@
+[Unit]
+Description=Trigger Lieer Mail Synchronization Every 5 Minutes
+
+[Timer]
+# Wait 2 minutes after boot-up before running the first check
+OnBootSec=2m
+# Run the synchronization loop every 5 minutes thereafter
+OnUnitInactiveSec=5m
+Persistent=true
+
+[Install]
+WantedBy=timers.target
