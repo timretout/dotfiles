@@ -278,3 +278,8 @@ exec systemctl --user restart emacs
 exec wl-paste --type text --watch cliphist store
 exec wl-paste --type image --watch cliphist store
 
+# Launch 1Password minimized to the background to handle the SSH agent
+exec 1password --silent
+
+exec nm-applet --indicator
+
