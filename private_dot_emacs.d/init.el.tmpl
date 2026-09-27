@@ -85,6 +85,47 @@
 (load-file (expand-file-name "lisp/notmuch-mail.el" user-emacs-directory))
 {{- end }}
 
+(use-package gptel
+  :ensure t
+  :bind (("C-c g g" . gptel)          ; Launch a dedicated chat buffer
+         ("C-c g r" . gptel-rewrite)  ; Pop up the inline rewrite/refactor interface
+         ("C-c g a" . gptel-add))      ; Add current buffer/file as context
+  :config
+  ;; 1. Configure Local Ollama for Gemma 4
+  (setq-default
+   gptel-backend (gptel-make-ollama "Ollama-Local"
+                   :host "localhost:11434"
+                   :stream t
+                   :models '("gemma4:12b")) ; Matches your exact pulled tag
+   gptel-model "gemma4:12b")                ; Sets Gemma 4 as your default model
+
+  ;; 2. Configure Cloud Gemini (Optional Hybrid Fallback)
+  ;; Simply uncomment if you want access to your Workspace cloud API keys
+  ;; (gptel-make-gemini "Gemini-Cloud" :stream t)
+  )
+
+;;
+;; Elfeed
+;;
+
+(use-package elfeed
+  :ensure t
+  :config
+  (setq elfeed-use-curl t)) ; Crucial for protocol handling
+
+(use-package elfeed-protocol
+  :ensure t
+  :after elfeed
+  :config
+  (setq elfeed-feeds
+        '(("fever+https://timretout@reader.miniflux.app"
+           :api-url "https://reader.miniflux.app/fever/"
+           :password {{ onepasswordRead "op://Private/7iwpwiq6x6ofb6ggnip7z7gk24/googlereader_password" | quote }})))
+
+  ;; Enable the protocol bridge
+  (elfeed-protocol-enable))
+
+
 ;;; -*- lexical-binding: t -*-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
