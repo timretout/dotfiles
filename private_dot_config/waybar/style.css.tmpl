@@ -33,7 +33,7 @@ window#waybar {
 }
 
 /* Individual Module Pillars */
-#custom-mail, #custom-blog, #custom-clock, #battery, #network, #pulseaudio, #tray, #mode {
+#custom-mail, #custom-blog, #custom-clock, #custom-rss, #battery, #network, #pulseaudio, #tray, #mode {
     padding: 0 12px;
     margin: 4px 3px;
     border-radius: 6px;
@@ -123,3 +123,13 @@ window#waybar {
     background-color: rgba(243, 139, 168, 0.15);
 }
 {{- end }}
+
+#custom-rss.unread {
+    color: #89b4fa; /* Catppuccin Blue (Noticeable, but calm and non-urgent) */
+    background-color: rgba(137, 180, 250, 0.15);
+}
+
+#custom-rss.empty {
+    color: #6c7086; /* Catppuccin Overlay0 (Muted Grey) */
+    background-color: #313244;
+}

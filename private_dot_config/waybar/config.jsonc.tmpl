@@ -23,6 +23,7 @@
         {{- if .enable_blog }}
         "custom/blog",
         {{- end }}
+        "custom/rss",
         "pulseaudio",
         "network",
         "battery",
@@ -79,6 +80,17 @@
         "tooltip": true
     },
     {{- end }}
+    "custom/rss": {
+        "format": "{} {icon}",
+        "format-icons": {
+            "unread": "",
+            "empty": ""
+        },
+        "return-type": "json",
+        "interval": 300,
+        "exec": "$HOME/.local/bin/waybar-rss.sh",
+        "on-click": "emacsclient -c -a '' -e '(elfeed)'"
+    },
     "pulseaudio": {
         "format": "{volume}%  ",
         "format-muted": "🔇 Muted",

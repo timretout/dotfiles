@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# Define your Miniflux credentials
+MINIFLUX_URL="https://reader.miniflux.app"
+API_TOKEN={{ onepasswordRead "op://Private/sezjwlv46k3bnraq3oqqk4qmui/credential" | quote }}
+
+# Fetch unread count efficiently
+RESPONSE=$(curl -s -H "X-Auth-Token: $API_TOKEN" "$MINIFLUX_URL/v1/entries?status=unread&limit=1")
+
+# Extract the total unread count using jq
+UNREAD=$(echo "$RESPONSE" | jq '.total // 0')
+
+# Output JSON tailored for your Waybar config
+if [ "$UNREAD" -gt 0 ]; then
+    echo "{\"text\": \"$UNREAD\", \"alt\": \"unread\", \"tooltip\": \"$UNREAD unread articles available.\"}"
+else
+    echo "{\"text\": \"\", \"alt\": \"empty\", \"tooltip\": \"Feeds are completely clear.\"}"
+fi
