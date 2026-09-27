@@ -40,7 +40,7 @@
 
           (let ((process-environment (cons (format "HUGO_POST_TITLE=%s" title) process-environment))
                 (default-directory blog-root))
-            (shell-command (format "hugo new %s" (shell-quote-argument relative-path)))
+            (shell-command (format "hugo new content %s" (shell-quote-argument relative-path)))
 
             (if (file-exists-p absolute-path)
                 (progn
