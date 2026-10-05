@@ -1,6 +1,6 @@
 #!/bin/sh
-# Scan staged changes for secrets before committing.
-# Enable with: git config core.hooksPath .githooks
+# Global pre-commit hook: scan staged changes for secrets before committing.
+# Enable with: git config --global core.hooksPath ~/.config/git/hooks
 # Bypass a false positive with: git commit --no-verify (or a .gitleaksignore entry)
 
 if ! command -v gitleaks >/dev/null 2>&1; then
@@ -13,7 +13,13 @@ fi
 # GITLEAKS_CONFIG, if set, is honoured by gitleaks itself.
 config=${XDG_CONFIG_HOME:-$HOME/.config}/gitleaks/config.toml
 if [ -z "$GITLEAKS_CONFIG" ] && [ -f "$config" ]; then
-    exec gitleaks protect --staged --redact --no-banner --config "$config"
+    gitleaks protect --staged --redact --no-banner --config "$config" || exit 1
+else
+    gitleaks protect --staged --redact --no-banner || exit 1
 fi
 
-exec gitleaks protect --staged --redact --no-banner
+# A global core.hooksPath hides the repo's own hooks, so chain to its pre-commit.
+local_hook=$(git rev-parse --git-common-dir)/hooks/pre-commit
+if [ -x "$local_hook" ]; then
+    exec "$local_hook" "$@"
+fi
