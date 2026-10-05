@@ -9,9 +9,10 @@ if ! command -v gitleaks >/dev/null 2>&1; then
     exit 1
 fi
 
-# Private rules (e.g. personal details) live in an untracked config under .git/.
-config=$(git rev-parse --git-path info/gitleaks.toml)
-if [ -f "$config" ]; then
+# Private rules (e.g. personal details) live in an untracked config in $HOME.
+# GITLEAKS_CONFIG, if set, is honoured by gitleaks itself.
+config=${XDG_CONFIG_HOME:-$HOME/.config}/gitleaks/config.toml
+if [ -z "$GITLEAKS_CONFIG" ] && [ -f "$config" ]; then
     exec gitleaks protect --staged --redact --no-banner --config "$config"
 fi
 
