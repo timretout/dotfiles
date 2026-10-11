@@ -24,6 +24,7 @@
         "custom/blog",
         {{- end }}
         "custom/rss",
+        "custom/claude",
         "pulseaudio",
         "network",
         "battery",
@@ -90,6 +91,12 @@
         "interval": 300,
         "exec": "$HOME/.local/bin/waybar-rss.sh",
         "on-click": "emacsclient -c -a '' -e '(elfeed)'"
+    },
+    "custom/claude": {
+        "format": "{} 󰚩",
+        "return-type": "json",
+        "interval": 60,
+        "exec": "$HOME/.local/bin/waybar-claude.sh"
     },
     "pulseaudio": {
         "format": "{volume}%  ",

@@ -39,7 +39,7 @@ window#waybar {
 }
 
 /* Individual Module Pillars */
-#custom-mail, #custom-blog, #custom-clock, #custom-rss, #battery, #network, #pulseaudio, #tray, #mode {
+#custom-mail, #custom-blog, #custom-clock, #custom-rss, #custom-claude, #battery, #network, #pulseaudio, #tray, #mode {
     padding: 0 12px;
     margin: 4px 3px;
     border-radius: 6px;
@@ -136,6 +136,27 @@ window#waybar {
 }
 
 #custom-rss.empty {
+    color: #6c7086; /* Catppuccin Overlay0 (Muted Grey) */
+    background-color: #313244;
+}
+
+/* Claude usage: worst of the 5-hour and weekly limits */
+#custom-claude.ok {
+    color: #fab387; /* Catppuccin Peach */
+    background-color: rgba(250, 179, 135, 0.15);
+}
+
+#custom-claude.warn {
+    color: #f9e2af; /* Catppuccin Yellow */
+    background-color: rgba(249, 226, 175, 0.25);
+}
+
+#custom-claude.crit {
+    color: #f38ba8; /* Catppuccin Red */
+    background-color: rgba(243, 139, 168, 0.25);
+}
+
+#custom-claude.error {
     color: #6c7086; /* Catppuccin Overlay0 (Muted Grey) */
     background-color: #313244;
 }
